@@ -6,6 +6,7 @@
 from ctypes import *
 import time
 import directkeys
+import psychopy_logging as logging
 
 import tkinter as tk
 
@@ -118,6 +119,9 @@ accuracyData = CAccuracy(0,0,0,0)
 
 # Main loop
 def main():
+    # Initialize data logger
+    logger = logging.DataLogger()
+
     connection_status = iViewXAPI.iV_ConnectLocal()
 
     if connection_status == 100:
@@ -205,6 +209,9 @@ def main():
             directkeys.ReleaseKey(CONST_BUTTON_CODE)
             time.sleep(CONST_BUTTON_PRESS_TIME_SECONDS)
             time_of_current_state = current_time
+
+        # Test data logging
+        logger.log_position(regular_x, regular_y)
 
         # DEBUG
         if CONST_DEBUG:
