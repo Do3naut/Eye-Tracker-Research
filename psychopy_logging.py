@@ -6,7 +6,7 @@ class DataLogger:
     """
     Note for debugging: since I can't test this live, I put another attempt as comments 
     (so the # prevents them from being run). To try the alternative, please remove the 2 #s
-    under __init__()  (lines 17 & 18), remove the # for line 23 under log_position(), and 
+    under __init__()  (lines 17 & 18), remove the # for line 23, and 
     add a # in front of line 21
     """
 
