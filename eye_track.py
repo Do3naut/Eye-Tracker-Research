@@ -148,6 +148,8 @@ class EyeTracker:
         self.current_gaze_y = 0.0
         self.game_paused = False
         self.num_failed_readings = 0
+        self.regular_x = -1.0
+        self.regular_y = -1.0
 
         # Wait for setup time to complete
         print("Will unpause the game and begin tracking gaze in " + str(CONST_SETUP_TIME_SECONDS) + " seconds...")
@@ -203,10 +205,10 @@ class EyeTracker:
 
         # regular_x and regular_y range from 0.0 to 1.0.
         # -1.0 indicates some sort of error in getting gaze location.
-        regular_x = self.current_gaze_x / self.width_px
-        regular_y = self.current_gaze_y / self.height_px
+        self.regular_x = self.current_gaze_x / self.width_px
+        self.regular_y = self.current_gaze_y / self.height_px
 
-        if regular_x < CONST_LEFT_BORDER or regular_x > CONST_RIGHT_BORDER or regular_y < CONST_TOP_BORDER or regular_y > CONST_BOTTOM_BORDER:
+        if self.regular_x < CONST_LEFT_BORDER or self.regular_x > CONST_RIGHT_BORDER or self.regular_y < CONST_TOP_BORDER or self.regular_y > CONST_BOTTOM_BORDER:
             out_of_range = True
 
         # At this point, out_of_range should be accurate for the frame.
@@ -228,14 +230,18 @@ class EyeTracker:
             self.time_of_current_state = current_time
 
         # Test data logging
-        self.logger.log_position(regular_x, regular_y)
+        self.logger.log_position(self.regular_x, self.regular_y)
 
         # DEBUG
         if CONST_DEBUG:
-            print(str(regular_x) + "," + str(regular_y) + "," + str(out_of_range) + "," + str(self.game_paused))
+            print(str(self.regular_x) + "," + str(self.regular_y) + "," + str(out_of_range) + "," + str(self.game_paused))
 
     def __del__(self):
         iViewXAPI.iV_Disconnect()
+
+    def get_position(self):
+        return self.regular_x, self.regular_y
+
 
 
 # Purely for testing purposes, should be called within PsychoPy Builder
